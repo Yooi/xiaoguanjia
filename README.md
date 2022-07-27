@@ -7,7 +7,7 @@
 
 帮助中心，动态，操作视频 请访问 [www.zhihu.com/people/imyooi](https://www.zhihu.com/people/imyooi)
 
-下载最新版 [批量小管家](https://github.com/atom/atom/releases/latest)
+下载最新版 [批量小管家](https://github.com/Yooi/xiaoguanjia/releases/latest)
 
 ![image](https://user-images.githubusercontent.com/6541066/181197027-b7176f51-e910-40bb-9601-ac3b15cf5c4a.png)
 
