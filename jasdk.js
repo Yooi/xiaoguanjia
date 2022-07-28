@@ -1229,7 +1229,7 @@ JA.api = function(){
 	};
 	return wb;
 }();
-/*
+
 JA.sdk = function(){
 		var wb = {};
 		wb.friendships_friends = function(uid, count, cursor, oCallback, errCallback){
@@ -1614,4 +1614,3 @@ JA.sdk = function(){
 		};
 	return wb;
 }();
-*/
