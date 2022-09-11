@@ -9,7 +9,7 @@ var JA = {
 	rest:{},
 	net:{},
 	config:{
-		appkey:"1567453627",
+		appkey:"",
 		access_token:""
 	},
 	verion:2112
