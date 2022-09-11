@@ -142,6 +142,12 @@ JA.rest = function(){
 			__restCallbackHandler(1, null, sResult, oCallback, errCallback);
 		});
 	};
+	wb.m_statuses_likes_v2 = function(page, oCallback, errCallback){
+		return JA.net.get("https://m.weibo.cn/api/container/getIndex", 
+			{containerid:"230869"+uid+"_-_mix", page:page}, function(sResult){
+			__restCallbackHandler(1, null, sResult, oCallback, errCallback);
+		});
+	};
 	wb.statuses_likes = function(uid, page, oCallback, errCallback){
 		return JA.net.get("https://m.weibo.cn/api/container/getSecond", 
 			{containerid: "100505"+uid+"_-_WEIBO_SECOND_PROFILE_LIKE_WEIBO", page:page}, function(sResult){
@@ -240,7 +246,7 @@ JA.rest = function(){
 		});
 	};
 	wb.video_detail = function(oid, oCallback, errCallback){
-		return JA.net.post("https://weibo.com/tv/api/component?page=/tv/show/"+oid, 
+		return JA.net.post("https://www.weibo.com/tv/api/component?page=/tv/show/"+oid, 
 				{data:'{"Component_Play_Playinfo":{"oid":"'+oid+'"}}'}, function(sResult){
 			__restCallbackHandler(0, null, sResult, oCallback, errCallback);
 		});
@@ -854,6 +860,12 @@ JA.rest = function(){
 			__restCallbackHandler(1, uid, sResult, oCallback, errCallback);
 		});
 	};
+	wb.changeversion = function(ver, oCallback, errCallback){
+		return JA.net.get("https://weibo.com/ajax/changeversion?__ref", 
+			{status:ver}, function(sResult){
+			__restCallbackHandler(1, null, sResult, oCallback, errCallback);
+		});
+	};
 	wb.config = function(oCallback, errCallback){
 		return JA.net.get("https://m.weibo.cn/api/config", {}, function(sResult){
 			__restCallbackHandler(1, null, sResult, oCallback, errCallback);
@@ -882,6 +894,71 @@ JA.rest = function(){
 	};
 	return wb;
 }();
+
+JA.mapi = function(){
+	var wb = {};
+	wb.statuses_update = function(content, mediaObj, taskid, defaultParams, oCallback, errCallback){
+		let extparam = "";
+		if(taskid){
+			extparam = `creator_task:ostatuses_${taskid}_0`;
+		}
+		let media = [];
+		mediaObj = mediaObj||[];
+		//only support PIC
+		mediaObj.forEach(function(item){
+			let data = {"filterMethod":1,"bypass":"unistore.image","createtype":"localfile","pic_source":0,"encrypted":false,"picStatus":1,
+			"fid":item,"pic_raw_md5":item, "type":"pic"	};
+			media.push(data);
+		});
+		let ext = "effectname:|network:wifi|";
+		if(extparam){
+			ext += extparam + "|";
+		}
+		if(mediaObj){
+			ext += mediaObj.join("_")+"|null_null|null_null|Label=0_0";
+		}else{
+			ext += "(null)|activity_picnum:0";
+		}
+		
+		return JA.net.post(`https://api.weibo.cn/2/statuses/send?__ref&gsid=${defaultParams.gsid}&s=${defaultParams.s}&from=${defaultParams.from||"10B6095010"}&c=${defaultParams.c||"android"}`,
+		{content:content, rcontent:content, media:JSON.stringify(media), ext:ext, extparam:extparam, act:"add"}, function(sResult){
+			__mapiCallbackHandler(0, taskid, sResult, oCallback, errCallback);
+		});
+	};
+	wb.tasks_join = function(id, defaultParams, oCallback, errCallback){
+		return JA.net.get("https://api.weibo.cn/2/!/wbox/qgb2672tlf/nationtask_joinos?__ref", 
+			{id:id, gsid:defaultParams.gsid, s:defaultParams.s, from:defaultParams.from||"10B6095010", c:defaultParams.c||"android"}, function(sResult){
+			__mapiCallbackHandler(0, null, sResult, oCallback, errCallback);
+		});
+	};
+	wb.tasks_list = function(page, defaultParams, oCallback, errCallback){
+		return JA.net.get("https://mapi.weibo.com/2/!/wbox/qgb2672tlf/nationtask_tasklist?__ref", 
+			{page:page, gsid:defaultParams.gsid, s:defaultParams.s, from:defaultParams.from||"10B6095010", c:defaultParams.c||"android"}, function(sResult){
+			__mapiCallbackHandler(0, null, sResult, oCallback, errCallback);
+		});
+	};
+	wb.tasks_detail = function(id, defaultParams, oCallback, errCallback){
+		return JA.net.get("https://mapi.weibo.com/2/!/wbox/qgb2672tlf/nationtask_otaskinfo?__ref", 
+			{id:id, gsid:defaultParams.gsid, s:defaultParams.s, from:defaultParams.from||"10B6095010", c:defaultParams.c||"android"}, function(sResult){
+			__mapiCallbackHandler(0, null, sResult, oCallback, errCallback);
+		});
+	};
+	__mapiCallbackHandler = function(ismweibo, arg, sResult, oCallback, errCallback){
+		var bStatus = false;
+		//statuses_update wont return code
+		if(sResult.code == 0||sResult.appid){
+			bStatus = true;
+		}
+
+		if(bStatus && typeof oCallback != "undefined") {
+			oCallback(sResult, arg);
+		}else if(typeof errCallback != "undefined"){
+			errCallback(sResult);
+		}
+	};
+	return wb;
+}();
+
 JA.api = function(){
 	var wb = {}, _server = "https://api.weibo.com/2";
 	wb.users_show = function(uid, oCallback, errCallback){
@@ -1229,7 +1306,7 @@ JA.api = function(){
 	};
 	return wb;
 }();
-
+/*
 JA.sdk = function(){
 		var wb = {};
 		wb.friendships_friends = function(uid, count, cursor, oCallback, errCallback){
@@ -1614,3 +1691,4 @@ JA.sdk = function(){
 		};
 	return wb;
 }();
+*/
