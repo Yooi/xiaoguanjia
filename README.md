@@ -3,7 +3,7 @@
 ### 批量小管家
 是一款多账号微博运营管理工具，2012-2022，服务用户包括：政府机关，企业，知名媒体，艺人，行业名人等等在内的海量用户。2012-2013年微博应用广场推荐管理工具。微博第三方软件服务商。
 
-官网地址: [xgj.lnk5.com](https://xgj.lnk5.com/)
+官网地址: [wiktool.com](https://xgj.lnk5.com/)
 
 帮助中心，动态，操作视频 请访问 [www.zhihu.com/people/imyooi](https://www.zhihu.com/people/imyooi)
 
